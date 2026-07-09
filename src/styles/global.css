@@ -1,0 +1,18 @@
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Web Awesome overlays (select dropdown, tooltips) must sit above the map canvas. */
+wa-select::part(listbox),
+.wa-popup {
+  z-index: 10;
+}

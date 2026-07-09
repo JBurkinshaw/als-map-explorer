@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.log
+
+# Local environment (contains the ALS API key) - never commit
+.env
+.env.local
+.env.*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp

@@ -32,10 +32,10 @@ Single client-side project rooted at the repo (per plan.md): `src/`, `tests/`,
 
 **Purpose**: Project initialization and tooling
 
-- [ ] T001 Scaffold Vite + TypeScript project at repo root: `package.json` (scripts: dev/build/test), `tsconfig.json` (ES2022, strict, CSS-module types), `vite.config.ts`, and `index.html` with a `#map` container and an app-root container
-- [ ] T002 Install dependencies: runtime `maplibre-gl@^5.24`, `codemirror@^6` + `@codemirror/state` + `@codemirror/view` + `@codemirror/lang-javascript`, `@awesome.me/webawesome`; dev `vite@^6`, `typescript`, `vitest`
-- [ ] T003 [P] Global styling bootstrap: import `maplibre-gl/dist/maplibre-gl.css` and Web Awesome, call `setBasePath()`/loader so assets resolve under Vite, add a base theme + `src/styles/app.module.css` and `src/styles/layout.module.css`
-- [ ] T004 [P] Create `.env.example` (`VITE_ALS_API_KEY`, `VITE_AWS_REGION`) and `.gitignore` (`.env.local`, `node_modules`, `dist`)
+- [X] T001 Scaffold Vite + TypeScript project at repo root: `package.json` (scripts: dev/build/test), `tsconfig.json` (ES2022, strict, CSS-module types), `vite.config.ts`, and `index.html` with a `#map` container and an app-root container
+- [X] T002 Install dependencies: runtime `maplibre-gl@^5.24`, `codemirror@^6` + `@codemirror/state` + `@codemirror/view` + `@codemirror/lang-javascript`, `@awesome.me/webawesome`; dev `vite@^6`, `typescript`, `vitest`
+- [X] T003 [P] Global styling bootstrap: import `maplibre-gl/dist/maplibre-gl.css` and Web Awesome, call `setBasePath()`/loader so assets resolve under Vite, add a base theme + `src/styles/app.module.css` and `src/styles/layout.module.css`
+- [X] T004 [P] Create `.env.example` (`VITE_ALS_API_KEY`, `VITE_AWS_REGION`) and `.gitignore` (`.env.local`, `node_modules`, `dist`)
 
 ---
 
@@ -46,15 +46,15 @@ settings store, and the reusable code-panel primitives (editor, sandbox, tab she
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Implement `src/config.ts` - CENTRAL integration config: read `VITE_ALS_API_KEY` / `VITE_AWS_REGION`, ALS Maps + Places endpoints, default `MapView`/`POIQuery` values, curated map-style list, and a curated POI category list (per Principle V, all ALS config lives here)
-- [ ] T006 [P] Implement `src/state/store.ts` - `SettingsStore` (mapView, poiQuery, poiResults; `subscribe`, `setMapView`, `setPoiQuery`, `setPoiResults`) per data-model.md
-- [ ] T007 [P] Implement `src/panels/editor.ts` - CodeMirror 6 wrapper: locked scaffold with one editable region via `EditorState.changeFilter` + a `StateField` tracking the range through edits; `@codemirror/lang-javascript` highlighting; get/set region text; reset-to-original
-- [ ] T008 [P] Implement `src/panels/sandbox.ts` - run the edited region via `new Function(...injected, code)` with an injected scope (per contracts/sandbox-scope.md); return `{ ok: true } | { ok: false, error }`, never throw to the caller (SC-006)
-- [ ] T009 [P] Implement `src/panels/codePanel.ts` - Web Awesome `wa-split-panel` layout (map | code panel) + `wa-tab-group` shell with a `registerTab(id, label, element)` API for stories to add their tabs
-- [ ] T010 [P] Implement `src/ui/notice.ts` - non-fatal error/notice display (banner/toast) reused across stories to surface ALS/code errors without blanking the map (SC-006)
-- [ ] T011 [P] Implement `src/explain/content.ts` - the `Explanation` structure `{ summary, referenceLabel, referenceUrl }` and a per-capability registry (populated by each story)
-- [ ] T012 Implement `src/main.ts` - bootstrap: build config, mount the split-panel + tab-group shell + notice area, and expose registration hooks for the map and tabs (stories wire into this file)
-- [ ] T013 [P] (OPTIONAL) Vitest for the sandbox runner in `tests/unit/sandbox.test.ts` - success path, thrown-error isolation, and scope restriction
+- [X] T005 Implement `src/config.ts` - CENTRAL integration config: read `VITE_ALS_API_KEY` / `VITE_AWS_REGION`, ALS Maps + Places endpoints, default `MapView`/`POIQuery` values, curated map-style list, and a curated POI category list (per Principle V, all ALS config lives here)
+- [X] T006 [P] Implement `src/state/store.ts` - `SettingsStore` (mapView, poiQuery, poiResults; `subscribe`, `setMapView`, `setPoiQuery`, `setPoiResults`) per data-model.md
+- [X] T007 [P] Implement `src/panels/editor.ts` - CodeMirror 6 wrapper: locked scaffold with one editable region via `EditorState.changeFilter` + a `StateField` tracking the range through edits; `@codemirror/lang-javascript` highlighting; get/set region text; reset-to-original
+- [X] T008 [P] Implement `src/panels/sandbox.ts` - run the edited region via `new Function(...injected, code)` with an injected scope (per contracts/sandbox-scope.md); return `{ ok: true } | { ok: false, error }`, never throw to the caller (SC-006)
+- [X] T009 [P] Implement `src/panels/codePanel.ts` - Web Awesome `wa-split-panel` layout (map | code panel) + `wa-tab-group` shell with a `registerTab(id, label, element)` API for stories to add their tabs
+- [X] T010 [P] Implement `src/ui/notice.ts` - non-fatal error/notice display (banner/toast) reused across stories to surface ALS/code errors without blanking the map (SC-006)
+- [X] T011 [P] Implement `src/explain/content.ts` - the `Explanation` structure `{ summary, referenceLabel, referenceUrl }` and a per-capability registry (populated by each story)
+- [X] T012 Implement `src/main.ts` - bootstrap: build config, mount the split-panel + tab-group shell + notice area, and expose registration hooks for the map and tabs (stories wire into this file)
+- [X] T013 [P] (OPTIONAL) Vitest for the sandbox runner in `tests/unit/sandbox.test.ts` - success path, thrown-error isolation, and scope restriction
 
 **Checkpoint**: Foundation ready - the app shell renders with an empty tabbed code panel; user stories can now begin
 
@@ -72,13 +72,13 @@ region; editing + applying the code updates the map; invalid code shows a
 non-fatal error and keeps the last map; reset restores the snippet; the reference
 link opens the ALS Maps doc.
 
-- [ ] T014 [P] [US1] Implement `src/als/basemap.ts` - `buildStyleUrl(region, style, colorScheme, opts?)` returning the ALS Maps v2 descriptor URL with `?key=` (per contracts/als-maps.md); raw and commented so the request is visible
-- [ ] T015 [US1] Implement `src/map/mapController.ts` - create the MapLibre map with the ALS basemap style (`validateStyle: false`); on `style.load` force a flat 2D default (`setProjection({})`, `setPitch(0)`); listen for map `error` events → `notice`; expose add/clear marker + `setStyleUrl` APIs (depends on T014, T005, T010)
-- [ ] T016 [US1] Register the map in `src/main.ts` so a default Amazon basemap renders on load (FR-001, SC-001) (depends on T015, T012)
-- [ ] T017 [P] [US1] Add the basemap explanation + ALS Maps reference link to `src/explain/content.ts` (FR-008/009)
-- [ ] T018 [US1] Implement `src/panels/basemapTab.ts` - HTML inputs (style `wa-select`, color-scheme `wa-switch`) + an editable snippet (build style URL / `setStyle`) + the explanation; wire both controls to the store so input↔code stay in sync; Apply runs via sandbox, Reset restores the snippet, errors route to `notice` (FR-002/003/004/010/011, SC-002/003/006) (depends on T014, T015, T017, T006, T007, T008)
-- [ ] T019 [US1] Register the basemap tab via `codePanel.registerTab` in `src/main.ts` (depends on T018, T009)
-- [ ] T020 [P] [US1] (OPTIONAL) Vitest for `buildStyleUrl` in `tests/unit/basemap.test.ts` - style, color-scheme, and key params
+- [X] T014 [P] [US1] Implement `src/als/basemap.ts` - `buildStyleUrl(region, style, colorScheme, opts?)` returning the ALS Maps v2 descriptor URL with `?key=` (per contracts/als-maps.md); raw and commented so the request is visible
+- [X] T015 [US1] Implement `src/map/mapController.ts` - create the MapLibre map with the ALS basemap style (`validateStyle: false`); on `style.load` force a flat 2D default (`setProjection({})`, `setPitch(0)`); listen for map `error` events → `notice`; expose add/clear marker + `setStyleUrl` APIs (depends on T014, T005, T010)
+- [X] T016 [US1] Register the map in `src/main.ts` so a default Amazon basemap renders on load (FR-001, SC-001) (depends on T015, T012)
+- [X] T017 [P] [US1] Add the basemap explanation + ALS Maps reference link to `src/explain/content.ts` (FR-008/009)
+- [X] T018 [US1] Implement `src/panels/basemapTab.ts` - HTML inputs (style `wa-select`, color-scheme `wa-switch`) + an editable snippet (build style URL / `setStyle`) + the explanation; wire both controls to the store so input↔code stay in sync; Apply runs via sandbox, Reset restores the snippet, errors route to `notice` (FR-002/003/004/010/011, SC-002/003/006) (depends on T014, T015, T017, T006, T007, T008)
+- [X] T019 [US1] Register the basemap tab via `codePanel.registerTab` in `src/main.ts` (depends on T018, T009)
+- [X] T020 [P] [US1] (OPTIONAL) Vitest for `buildStyleUrl` in `tests/unit/basemap.test.ts` - style, color-scheme, and key params
 
 **Checkpoint**: MVP - a working, editable Amazon basemap with explanation. Fully demoable.
 
@@ -96,12 +96,12 @@ selecting a marker shows basic details; the reference link opens the ALS Places 
 
 **Note**: Depends on the map instance from US1 (T015).
 
-- [ ] T021 [P] [US2] Implement `src/als/places.ts` - `searchPlaces(mode, params)`: `fetch` POST to Places v2 `search-nearby` / `search-text` with `?key=` and `Filter.IncludeCategories` (per contracts/als-places.md); map `ResultItems` → `POI[]`; handle empty results and HTTP/network errors without throwing (SC-006)
-- [ ] T022 [P] [US2] Add the POI explanation + ALS Places reference link to `src/explain/content.ts` (FR-008/009)
-- [ ] T023 [US2] Extend `src/map/mapController.ts` - render `POI[]` as markers, clear on new search, and show basic details on marker select (FR-012) (depends on T015)
-- [ ] T024 [US2] Implement `src/panels/poiTab.ts` - inputs (mode text/nearby, query text, radius, category checkboxes, max results) + an editable snippet (`searchPlaces` call) + the explanation; wire to the store; show "no results" and "results limited" indications; errors route to `notice` (FR-005/006/003/004/010) (depends on T021, T023, T022, T006, T007, T008)
-- [ ] T025 [US2] Register the POI tab via `codePanel.registerTab` in `src/main.ts` (depends on T024)
-- [ ] T026 [P] [US2] (OPTIONAL) Vitest for `places.ts` in `tests/unit/places.test.ts` - request-body construction, category filter mapping, and `ResultItems`→`POI` mapping
+- [X] T021 [P] [US2] Implement `src/als/places.ts` - `searchPlaces(mode, params)`: `fetch` POST to Places v2 `search-nearby` / `search-text` with `?key=` and `Filter.IncludeCategories` (per contracts/als-places.md); map `ResultItems` → `POI[]`; handle empty results and HTTP/network errors without throwing (SC-006)
+- [X] T022 [P] [US2] Add the POI explanation + ALS Places reference link to `src/explain/content.ts` (FR-008/009)
+- [X] T023 [US2] Extend `src/map/mapController.ts` - render `POI[]` as markers, clear on new search, and show basic details on marker select (FR-012) (depends on T015)
+- [X] T024 [US2] Implement `src/panels/poiTab.ts` - inputs (mode text/nearby, query text, radius, category checkboxes, max results) + an editable snippet (`searchPlaces` call) + the explanation; wire to the store; show "no results" and "results limited" indications; errors route to `notice` (FR-005/006/003/004/010) (depends on T021, T023, T022, T006, T007, T008)
+- [X] T025 [US2] Register the POI tab via `codePanel.registerTab` in `src/main.ts` (depends on T024)
+- [X] T026 [P] [US2] (OPTIONAL) Vitest for `places.ts` in `tests/unit/places.test.ts` - request-body construction, category filter mapping, and `ResultItems`→`POI` mapping
 
 **Checkpoint**: US1 + US2 both work independently - basemap editing and POI search/filter.
 
@@ -120,11 +120,11 @@ POIs are preserved; reference links open the ALS 3D and MapLibre docs.
 
 **Note**: Depends on the map instance from US1 (T015) and `als/basemap.ts` (T014).
 
-- [ ] T027 [US3] Extend `src/config.ts` + `src/state/store.ts` with 3D fields on `MapView` (`terrain3d`, `buildings3d`, `contourDensity`, `globe`, `pitch`) per data-model.md (depends on T005, T006)
-- [ ] T028 [P] [US3] Implement `src/map/threeD.ts` - style-request features (`terrain`/`buildings`/`contour-density`) by rebuilding the URL via `als/basemap.ts` + `map.setStyle`, re-applying runtime settings on the next `style.load`; runtime features `setGlobe` (`setProjection`) and `setPitch`; nudge pitch > 0 when terrain/buildings enabled (per contracts/als-maps.md, research D4)
-- [ ] T029 [P] [US3] Add the 3D explanation + ALS 3D and MapLibre globe reference links to `src/explain/content.ts`, explicitly distinguishing style-request (terrain/buildings) from runtime (globe/tilt) features (FR-008/009/013)
-- [ ] T030 [US3] Implement `src/panels/threeDTab.ts` - inputs (terrain `wa-switch`, buildings `wa-switch`, globe `wa-switch`, pitch `wa-slider`) + an editable snippet showing both mechanisms + the explanation; wire to the store; preserve basemap + POIs across changes; errors route to `notice` (FR-007/013/003/004/010) (depends on T027, T028, T029, T007, T008)
-- [ ] T031 [US3] Register the 3D tab via `codePanel.registerTab` in `src/main.ts` (depends on T030)
+- [X] T027 [US3] Extend `src/config.ts` + `src/state/store.ts` with 3D fields on `MapView` (`terrain3d`, `buildings3d`, `contourDensity`, `globe`, `pitch`) per data-model.md (depends on T005, T006)
+- [X] T028 [P] [US3] Implement `src/map/threeD.ts` - style-request features (`terrain`/`buildings`/`contour-density`) by rebuilding the URL via `als/basemap.ts` + `map.setStyle`, re-applying runtime settings on the next `style.load`; runtime features `setGlobe` (`setProjection`) and `setPitch`; nudge pitch > 0 when terrain/buildings enabled (per contracts/als-maps.md, research D4)
+- [X] T029 [P] [US3] Add the 3D explanation + ALS 3D and MapLibre globe reference links to `src/explain/content.ts`, explicitly distinguishing style-request (terrain/buildings) from runtime (globe/tilt) features (FR-008/009/013)
+- [X] T030 [US3] Implement `src/panels/threeDTab.ts` - inputs (terrain `wa-switch`, buildings `wa-switch`, globe `wa-switch`, pitch `wa-slider`) + an editable snippet showing both mechanisms + the explanation; wire to the store; preserve basemap + POIs across changes; errors route to `notice` (FR-007/013/003/004/010) (depends on T027, T028, T029, T007, T008)
+- [X] T031 [US3] Register the 3D tab via `codePanel.registerTab` in `src/main.ts` (depends on T030)
 
 **Checkpoint**: All three user stories independently functional.
 
@@ -134,12 +134,12 @@ POIs are preserved; reference links open the ALS 3D and MapLibre docs.
 
 **Purpose**: Cross-story concerns and final validation
 
-- [ ] T032 [P] Resolve Web Awesome shadow-DOM caveats (research D7): ensure overlays (select/tooltip/dialog) stack above the MapLibre canvas, fix `pointer-events`, and apply theming via CSS custom properties + `::part(...)` in global CSS (not CSS Modules)
-- [ ] T033 [P] Missing/invalid API-key startup guard: clear, actionable message instead of a blank map when `VITE_ALS_API_KEY`/region is absent or rejected (SC-006, spec Edge Cases)
-- [ ] T034 Verify every on-screen reference link resolves to a live ALS/MapLibre page (SC-005)
-- [ ] T035 [P] Write `README.md` - setup (API key provisioning), run commands, and a short "how ALS + MapLibre integrate" teaching summary (Constitution Principle I)
-- [ ] T036 Run `quickstart.md` validation - all US1-US3 scenarios plus the cross-cutting checks
-- [ ] T037 [P] Performance pass against SC-001 (<5s basemap), SC-002 (<1s input→map), SC-003 (<2s code apply)
+- [X] T032 [P] Resolve Web Awesome shadow-DOM caveats (research D7): ensure overlays (select/tooltip/dialog) stack above the MapLibre canvas, fix `pointer-events`, and apply theming via CSS custom properties + `::part(...)` in global CSS (not CSS Modules)
+- [X] T033 [P] Missing/invalid API-key startup guard: clear, actionable message instead of a blank map when `VITE_ALS_API_KEY`/region is absent or rejected (SC-006, spec Edge Cases)
+- [X] T034 Verify every on-screen reference link resolves to a live ALS/MapLibre page (SC-005)
+- [X] T035 [P] Write `README.md` - setup (API key provisioning), run commands, and a short "how ALS + MapLibre integrate" teaching summary (Constitution Principle I)
+- [X] T036 Run `quickstart.md` validation - all US1-US3 scenarios plus the cross-cutting checks
+- [X] T037 [P] Performance pass against SC-001 (<5s basemap), SC-002 (<1s input→map), SC-003 (<2s code apply)
 
 ---
 
