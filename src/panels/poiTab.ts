@@ -4,15 +4,16 @@
 import { createTabShell } from './tabShell';
 import { LockedEditor } from './editor';
 import { runSnippet } from './sandbox';
+import styles from './tab.module.css';
 import { inputControl, selectControl, switchControl } from './controls';
-import { POI_CATEGORIES } from '../config';
+import { FALLBACK_ICON, POI_CATEGORIES, POI_ICON_MAP } from '../config';
 import { explanations } from '../explain/content';
 import { searchPlaces } from '../als/places';
 import { poiRequestPreview } from '../als/preview';
 import type { MapController } from '../map/mapController';
 import type { SettingsStore } from '../state/store';
 import type { Notice } from '../ui/notice';
-import type { PoiQuery, PoiSearchMode } from '../types';
+import type { PoiIconMap, PoiQuery, PoiSearchMode } from '../types';
 
 const PREFIX = `// POIs come from ALS Places v2, called as a raw REST request. Under the hood,
 // searchPois(query) POSTs to the Places endpoint and turns each result into a marker:
@@ -39,6 +40,23 @@ function codeFor(query: PoiQuery): string {
     return `{ mode: 'text', queryText: '${query.queryText}', includeCategories: [${cats}], maxResults: ${query.maxResults} }`;
   }
   return `{ radiusMeters: ${query.radiusMeters}, includeCategories: [${cats}], maxResults: ${query.maxResults} }`;
+}
+
+// A second editable region: the ALS-category -> Maki-icon map that decides each
+// marker's icon. setPoiIcons(patch) merges into it and re-renders, so the learner
+// can point a category at any Maki icon and watch the markers change.
+const ICON_PREFIX = `// Each POI marker's icon comes from its category via this map:
+//   ALS category id  ->  Maki icon name  (browse names at labs.mapbox.com/maki-icons)
+// Unmapped categories fall back to '${FALLBACK_ICON}'. Edit the map, then "Apply icons":
+setPoiIcons(`;
+
+const ICON_SUFFIX = `)`;
+
+function iconCodeFor(map: PoiIconMap): string {
+  const entries = Object.entries(map)
+    .map(([id, icon]) => `  '${id}': '${icon}'`)
+    .join(',\n');
+  return `{\n${entries}\n}`;
 }
 
 export function createPoiTab(map: MapController, store: SettingsStore, notice: Notice): HTMLElement {
@@ -71,6 +89,40 @@ export function createPoiTab(map: MapController, store: SettingsStore, notice: N
     prefix: PREFIX,
     editable: codeFor(store.poiQuery),
     suffix: SUFFIX,
+  });
+
+  // US2 - a second editable region for the category -> Maki-icon map. setPoiIcons()
+  // merges the learner's edits into the shared map and re-renders the current results
+  // (no new ALS request). An unknown icon name just 404s and the marker falls back to
+  // the generic pin, so the map is never broken (SC-006).
+  const setPoiIcons = (patch: Record<string, string>): void => {
+    Object.assign(POI_ICON_MAP, patch);
+    map.showPois(store.poiResults);
+  };
+
+  const iconSection = document.createElement('div');
+  const iconHeading = document.createElement('p');
+  iconHeading.textContent = 'POI marker icons';
+  const iconEditorMount = document.createElement('div');
+  const iconButtons = document.createElement('div');
+  iconButtons.className = styles.buttons;
+  const applyIconsBtn = document.createElement('wa-button');
+  applyIconsBtn.setAttribute('appearance', 'outlined');
+  applyIconsBtn.textContent = 'Apply icons';
+  iconButtons.append(applyIconsBtn);
+  iconSection.append(iconHeading, iconEditorMount, iconButtons);
+  shell.preview.after(iconSection);
+
+  const iconEditor = new LockedEditor(iconEditorMount, {
+    prefix: ICON_PREFIX,
+    editable: iconCodeFor(POI_ICON_MAP),
+    suffix: ICON_SUFFIX,
+  });
+
+  applyIconsBtn.addEventListener('click', () => {
+    const result = runSnippet(iconEditor.getFullText(), { setPoiIcons });
+    if (result.ok) notice.clear();
+    else notice.show(`Icon code error: ${result.error}`);
   });
 
   // Read-only preview of the exact ALS Places request for the current query (key masked).

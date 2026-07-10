@@ -12,6 +12,8 @@ import type { Map as MlMap, Marker as MlMarker } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { buildStyleUrl } from '../als/basemap';
+import { FALLBACK_ICON, POI_ICON_MAP } from '../config';
+import { buildMarkerElement, FALLBACK_MARKER_SVG, iconNameFor, loadIconSvg } from './poiIcons';
 import type { MapView, Poi } from '../types';
 import type { Notice } from '../ui/notice';
 import { escapeHtml } from '../util/dom';
@@ -75,11 +77,21 @@ export class MapController {
     this.map.setPitch(degrees);
   }
 
-  /** Render POIs as markers, replacing any previous ones. */
+  /**
+   * Render POIs as markers, replacing any previous ones. Each marker's icon is
+   * chosen from the POI's category via POI_ICON_MAP (Maki icons). The element shows
+   * the inline fallback immediately and is upgraded to the fetched icon when it
+   * resolves, so markers appear at once and the map is never blank (SC-006).
+   */
   showPois(pois: Poi[]): void {
     this.clearPois();
     for (const poi of pois) {
-      const marker = new maplibregl.Marker()
+      const element = buildMarkerElement(FALLBACK_MARKER_SVG);
+      const name = iconNameFor(poi, POI_ICON_MAP, FALLBACK_ICON);
+      void loadIconSvg(name).then((svg) => {
+        element.innerHTML = svg;
+      });
+      const marker = new maplibregl.Marker({ element })
         .setLngLat(poi.position)
         .setPopup(new maplibregl.Popup({ offset: 24 }).setHTML(this.popupHtml(poi)))
         .addTo(this.map);

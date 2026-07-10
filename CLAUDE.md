@@ -15,7 +15,8 @@ See `.specify/memory/constitution.md` (Learning-First, fast iteration) and
 ## ALS integration (pure client-side, API key)
 
 - Basemap: MapLibre `style` = `https://maps.geo.{region}.amazonaws.com/v2/styles/{Standard|Monochrome|Hybrid|Satellite}/descriptor?key={KEY}&color-scheme={Light|Dark}`.
-- POI: `fetch` POST to `https://places.geo.{region}.amazonaws.com/v2/search-nearby` (or `search-text`) `?key={KEY}`, body `{QueryPosition, QueryRadius, Filter:{IncludeCategories:[...]}, MaxResults}`.
+- POI: `fetch` POST to `https://places.geo.{region}.amazonaws.com/v2/search-nearby` (or `search-text`) `?key={KEY}`, body `{QueryPosition, QueryRadius, Filter:{IncludeCategories:[...]}, MaxResults}`. Valid category IDs matter (e.g. `petrol-gasoline_station`, `grocery` - not `fuel_station`/`supermarket`); cross-check the ALS place-categories doc.
+- POI marker icons: category-appropriate icons from Mapbox **Maki**, fetched by name from the jsDelivr CDN (pinned `@mapbox/maki@8.2.0`), cached in-memory, with an inline generic fallback so the map is never blank. The ALS-category→Maki-name mapping is centralized in `src/config.ts` (`POI_ICON_MAP`); resolver + fetch live in `src/map/poiIcons.ts`. See `specs/004-maki-poi-icons/`.
 - 3D features (two mechanisms - keep both visible in code):
   - **Style-request** (rebuild URL + `map.setStyle`): `&terrain=Terrain3D`, `&buildings=Buildings3D`, `&contour-density=...`.
   - **Runtime** (MapLibre): globe is ON by default in ALS styles - `map.setProjection({})` flattens, `{type:'globe'}` re-enables; `map.setPitch(0-85)` tilts (need >0 to see terrain/buildings). Re-apply runtime settings after `setStyle` on `style.load`. Use `validateStyle:false`.

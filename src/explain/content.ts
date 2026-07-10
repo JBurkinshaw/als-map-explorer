@@ -41,11 +41,20 @@ export const explanations = {
         'for each result we create a maplibregl.Marker at its position, attach a popup with the title ' +
         'and category, and add it to the map. Changing the search reruns the fetch and replaces the ' +
         'markers.',
+      'Each marker’s icon is chosen from the POI’s category using a small map of ALS ' +
+        'category id -> Maki icon name (Maki is Mapbox’s open-source POI icon set). We fetch that ' +
+        'icon’s SVG by name from a CDN and draw it in the marker; if a category is not in the map, ' +
+        'or an icon name does not exist, the marker falls back to a generic pin so nothing is ever ' +
+        'blank. Edit the icon map in the second code box to point a category at any Maki icon.',
     ],
     references: [
       {
         label: 'ALS: Search Nearby',
         url: 'https://docs.aws.amazon.com/location/latest/developerguide/search-nearby.html',
+      },
+      {
+        label: 'Maki: open-source POI icon set',
+        url: 'https://labs.mapbox.com/maki-icons/',
       },
       {
         label: 'ALS: Search Text',

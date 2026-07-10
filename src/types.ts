@@ -43,6 +43,9 @@ export interface PoiCategory {
   primary: boolean;
 }
 
+/** ALS place-category ID -> Maki icon name, used to pick each POI marker's icon. */
+export type PoiIconMap = Record<string, string>;
+
 /** A place returned by ALS Places, rendered as a marker. */
 export interface Poi {
   placeId: string;

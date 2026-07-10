@@ -16,3 +16,24 @@ wa-select::part(listbox),
 .wa-popup {
   z-index: 10;
 }
+
+/* POI markers: a Maki icon in a circular badge, legible against any basemap. */
+.poi-marker {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #0d7d74;
+  border: 2px solid #0d7d74;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.poi-marker svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
