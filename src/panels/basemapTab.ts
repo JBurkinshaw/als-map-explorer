@@ -6,6 +6,7 @@ import { LockedEditor } from './editor';
 import { runSnippet } from './sandbox';
 import { selectControl, switchControl } from './controls';
 import { MAP_STYLES } from '../config';
+import { styleRequestPreview } from '../als/preview';
 import { explanations } from '../explain/content';
 import type { MapController } from '../map/mapController';
 import type { SettingsStore } from '../state/store';
@@ -47,6 +48,12 @@ export function createBasemapTab(map: MapController, store: SettingsStore, notic
     suffix: SUFFIX,
   });
 
+  // Read-only preview of the exact ALS Maps style-descriptor URL (key masked).
+  const renderPreview = (): void => {
+    shell.preview.textContent = `Style request that will be sent (key hidden):\nGET ${styleRequestPreview(store.mapView)}`;
+  };
+  renderPreview();
+
   // The single path both inputs and the injected setBasemap() helper go through.
   const apply = (styleName: MapStyleName, colorScheme: ColorScheme): void => {
     store.setMapView({ styleName, colorScheme });
@@ -75,6 +82,7 @@ export function createBasemapTab(map: MapController, store: SettingsStore, notic
     dark.set(colorScheme === 'Dark');
     editor.setEditableText(codeFor(styleName, colorScheme));
     syncing = false;
+    renderPreview();
   });
 
   return shell.element;

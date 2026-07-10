@@ -8,6 +8,7 @@ import { inputControl, selectControl, switchControl } from './controls';
 import { POI_CATEGORIES } from '../config';
 import { explanations } from '../explain/content';
 import { searchPlaces } from '../als/places';
+import { poiRequestPreview } from '../als/preview';
 import type { MapController } from '../map/mapController';
 import type { SettingsStore } from '../state/store';
 import type { Notice } from '../ui/notice';
@@ -72,6 +73,13 @@ export function createPoiTab(map: MapController, store: SettingsStore, notice: N
     suffix: SUFFIX,
   });
 
+  // Read-only preview of the exact ALS Places request for the current query (key masked).
+  const renderPreview = (): void => {
+    const p = poiRequestPreview(store.poiQuery, map.getCenter());
+    shell.preview.textContent = `Request that will be sent (key hidden):\n${p.method} ${p.url}\n\n${p.body}`;
+  };
+  renderPreview();
+
   // Run the ALS Places request for the query currently in the store.
   const runSearch = async (): Promise<void> => {
     try {
@@ -129,6 +137,7 @@ export function createPoiTab(map: MapController, store: SettingsStore, notice: N
     for (const { id, control } of categoryControls) control.set(query.includeCategories.includes(id));
     editor.setEditableText(codeFor(query));
     syncing = false;
+    renderPreview();
   });
 
   return shell.element;

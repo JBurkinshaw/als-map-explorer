@@ -1,6 +1,6 @@
 // Plain-language explanations shown under each capability tab. Each is a set of
 // paragraphs describing the ALS request/response AND how MapLibre consumes it, plus a
-// link to the authoritative reference (FR-011, FR-012).
+// curated list of direct links to the authoritative docs (FR-008..FR-011).
 
 import type { Explanation } from '../types';
 
@@ -16,8 +16,20 @@ export const explanations = {
         'at, then renders them. Switching style or colour scheme simply rebuilds the URL and calls ' +
         'map.setStyle(url) - no other code changes.',
     ],
-    referenceLabel: 'ALS: Add an interactive map',
-    referenceUrl: 'https://docs.aws.amazon.com/location/latest/developerguide/qs-add-map.html',
+    references: [
+      {
+        label: 'ALS: Add an interactive map',
+        url: 'https://docs.aws.amazon.com/location/latest/developerguide/qs-add-map.html',
+      },
+      {
+        label: 'ALS: Style dynamic maps',
+        url: 'https://docs.aws.amazon.com/location/latest/developerguide/styling-dynamic-maps.html',
+      },
+      {
+        label: 'ALS API: GetStyleDescriptor',
+        url: 'https://docs.aws.amazon.com/location/latest/APIReference/API_geomaps_GetStyleDescriptor.html',
+      },
+    ],
   },
   poi: {
     paragraphs: [
@@ -30,8 +42,24 @@ export const explanations = {
         'and category, and add it to the map. Changing the search reruns the fetch and replaces the ' +
         'markers.',
     ],
-    referenceLabel: 'ALS: Search for points of interest',
-    referenceUrl: 'https://docs.aws.amazon.com/location/latest/developerguide/search-poi.html',
+    references: [
+      {
+        label: 'ALS: Search Nearby',
+        url: 'https://docs.aws.amazon.com/location/latest/developerguide/search-nearby.html',
+      },
+      {
+        label: 'ALS: Search Text',
+        url: 'https://docs.aws.amazon.com/location/latest/developerguide/search-text.html',
+      },
+      {
+        label: 'ALS API: SearchNearby',
+        url: 'https://docs.aws.amazon.com/location/latest/APIReference/API_geoplaces_SearchNearby.html',
+      },
+      {
+        label: 'ALS: Search nearby by category',
+        url: 'https://docs.aws.amazon.com/location/latest/developerguide/how-to-search-nearby-category.html',
+      },
+    ],
   },
   threeD: {
     paragraphs: [
@@ -47,7 +75,23 @@ export const explanations = {
         'globe and pitch on MapLibre’s style.load event. You need pitch > 0 to actually see ' +
         'terrain relief and building height.',
     ],
-    referenceLabel: 'ALS: 3D features',
-    referenceUrl: 'https://docs.aws.amazon.com/location/latest/developerguide/maps-3d-map.html',
+    references: [
+      {
+        label: 'ALS: 3D map',
+        url: 'https://docs.aws.amazon.com/location/latest/developerguide/maps-3d-map.html',
+      },
+      {
+        label: 'ALS: Topography (terrain & contours)',
+        url: 'https://docs.aws.amazon.com/location/latest/developerguide/maps-topographic-map.html',
+      },
+      {
+        label: 'ALS API: GetStyleDescriptor',
+        url: 'https://docs.aws.amazon.com/location/latest/APIReference/API_geomaps_GetStyleDescriptor.html',
+      },
+      {
+        label: 'MapLibre: Map API (setProjection / setPitch)',
+        url: 'https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/',
+      },
+    ],
   },
 } satisfies Record<string, Explanation>;

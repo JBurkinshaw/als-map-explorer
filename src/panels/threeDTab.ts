@@ -7,6 +7,7 @@ import { runSnippet } from './sandbox';
 import { sliderControl, switchControl } from './controls';
 import { explanations } from '../explain/content';
 import { apply3D } from '../map/threeD';
+import { styleRequestPreview } from '../als/preview';
 import type { ThreeDPatch } from '../map/threeD';
 import type { MapController } from '../map/mapController';
 import type { SettingsStore } from '../state/store';
@@ -57,6 +58,12 @@ export function createThreeDTab(map: MapController, store: SettingsStore, notice
     suffix: SUFFIX,
   });
 
+  // Read-only preview of the exact ALS Maps style-descriptor URL for the current view (key masked).
+  const renderPreview = (): void => {
+    shell.preview.textContent = `Style request that will be sent (key hidden):\nGET ${styleRequestPreview(store.mapView)}`;
+  };
+  renderPreview();
+
   // The single path both inputs and the injected set3D() helper go through.
   const set3D = (input: ThreeDInput): void => {
     const patch: ThreeDPatch = {};
@@ -102,6 +109,7 @@ export function createThreeDTab(map: MapController, store: SettingsStore, notice
     pitch.set(view.pitch);
     editor.setEditableText(codeFor(view));
     syncing = false;
+    renderPreview();
   });
 
   return shell.element;

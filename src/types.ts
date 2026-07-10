@@ -52,10 +52,16 @@ export interface Poi {
   address?: string;
 }
 
-/** Plain-language description of a capability plus its reference link. */
+/** A labelled documentation link shown in a capability's teaching note. */
+export interface ReferenceLink {
+  label: string;
+  url: string;
+}
+
+/** Plain-language description of a capability plus its reference links. */
 export interface Explanation {
   /** One or more paragraphs; each rendered as its own block. */
   paragraphs: string[];
-  referenceLabel: string;
-  referenceUrl: string;
+  /** Curated list of direct documentation links; each opens in a new tab. */
+  references: ReferenceLink[];
 }

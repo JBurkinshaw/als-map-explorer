@@ -35,7 +35,30 @@
 }
 
 .explanation a {
-  display: inline-block;
-  margin-top: 0.5rem;
   font-weight: 600;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+/* Read-only request preview: monospace, wraps long URLs, hidden when empty. */
+.preview {
+  border: 1px solid var(--wa-color-neutral-border, #d0d0d0);
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--wa-color-neutral-fill-quiet, #f6f6f6);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--wa-color-text-normal, #333);
+}
+
+.preview:empty {
+  display: none;
 }

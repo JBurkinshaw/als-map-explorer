@@ -12,6 +12,8 @@ export interface TabShell {
   element: HTMLElement;
   controls: HTMLElement;
   editorMount: HTMLElement;
+  /** Read-only request-preview mount; a tab fills it, or leaves it empty (hidden via CSS). */
+  preview: HTMLElement;
   onApply(fn: () => void): void;
   onReset(fn: () => void): void;
 }
@@ -39,12 +41,17 @@ export function createTabShell(explanation: Explanation): TabShell {
 
   buttons.append(applyBtn, resetBtn);
 
-  element.append(controls, editorMount, buttons, renderExplanation(explanation));
+  // Read-only preview of the request that will be sent (filled by tabs that want it).
+  const preview = document.createElement('div');
+  preview.className = styles.preview;
+
+  element.append(controls, editorMount, buttons, preview, renderExplanation(explanation));
 
   return {
     element,
     controls,
     editorMount,
+    preview,
     onApply: (fn) => applyBtn.addEventListener('click', fn),
     onReset: (fn) => resetBtn.addEventListener('click', fn),
   };
@@ -62,12 +69,18 @@ function renderExplanation(exp: Explanation): HTMLElement {
     box.appendChild(p);
   }
 
-  const link = document.createElement('a');
-  link.href = exp.referenceUrl;
-  link.target = '_blank';
-  link.rel = 'noreferrer';
-  link.textContent = `\u{1F4D6} ${exp.referenceLabel}`;
+  // Curated documentation links, each opening in a new tab (never navigates the app away).
+  const links = document.createElement('div');
+  links.className = styles.links;
+  for (const ref of exp.references) {
+    const link = document.createElement('a');
+    link.href = ref.url;
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    link.textContent = `\u{1F4D6} ${ref.label}`;
+    links.appendChild(link);
+  }
 
-  box.appendChild(link);
+  box.appendChild(links);
   return box;
 }
