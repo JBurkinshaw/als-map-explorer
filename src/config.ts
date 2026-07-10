@@ -40,6 +40,7 @@ export const DEFAULT_MAP_VIEW: MapView = {
   zoom: 11,
   terrain3d: false,
   buildings3d: false,
+  contourDensity: 'Off',
   globe: false,
   pitch: 0,
 };

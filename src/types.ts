@@ -3,6 +3,14 @@
 export type MapStyleName = 'Standard' | 'Monochrome' | 'Hybrid' | 'Satellite';
 export type ColorScheme = 'Light' | 'Dark';
 
+/**
+ * Topographic contour density. 'Off' omits the ALS `contour-density` param;
+ * the other levels are the values the service accepts. The 3D tab's on/off
+ * control maps "on" to 'Medium'; the level model is kept so a future density
+ * selector is additive.
+ */
+export type ContourDensity = 'Off' | 'Low' | 'Medium' | 'High';
+
 /** The current visual state of the map (basemap + 3D features). */
 export interface MapView {
   styleName: MapStyleName;
@@ -12,6 +20,7 @@ export interface MapView {
   // 3D features enabled via the ALS style request (rebuild the style URL):
   terrain3d: boolean;
   buildings3d: boolean;
+  contourDensity: ContourDensity;
   // 3D features controlled at runtime (MapLibre map settings):
   globe: boolean;
   pitch: number;
@@ -45,7 +54,8 @@ export interface Poi {
 
 /** Plain-language description of a capability plus its reference link. */
 export interface Explanation {
-  summary: string;
+  /** One or more paragraphs; each rendered as its own block. */
+  paragraphs: string[];
   referenceLabel: string;
   referenceUrl: string;
 }

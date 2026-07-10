@@ -12,10 +12,15 @@ import type { SettingsStore } from '../state/store';
 import type { Notice } from '../ui/notice';
 import type { ColorScheme, MapStyleName } from '../types';
 
-const PREFIX = `// AWS Location Service serves the basemap as a MapLibre "style" URL:
-//   https://maps.geo.<region>.amazonaws.com/v2/styles/<Style>/descriptor?key=<KEY>&color-scheme=<Light|Dark>
-// Styles: Standard | Monochrome | Hybrid | Satellite
-// Edit the call below, then click "Apply code".
+const PREFIX = `// AWS Location Service serves the basemap as a MapLibre "style" URL. Under the hood,
+// setBasemap(styleName, colorScheme) rebuilds this URL and hands it to MapLibre:
+//
+//   const url =
+//     'https://maps.geo.<region>.amazonaws.com/v2/styles/' + styleName + '/descriptor' +
+//     '?key=<KEY>&color-scheme=' + colorScheme;
+//   map.setStyle(url);   // MapLibre then loads tiles, glyphs & sprites from the descriptor
+//
+// Styles: Standard | Monochrome | Hybrid | Satellite. Edit the call, then click "Apply code":
 setBasemap(`;
 
 const SUFFIX = `)`;

@@ -13,10 +13,21 @@ import type { SettingsStore } from '../state/store';
 import type { Notice } from '../ui/notice';
 import type { PoiQuery, PoiSearchMode } from '../types';
 
-const PREFIX = `// POIs come from ALS Places v2 (raw REST):
-//   POST https://places.geo.<region>.amazonaws.com/v2/search-nearby?key=<KEY>
-//   body: { QueryPosition, QueryRadius, Filter: { IncludeCategories }, MaxResults }
-// Edit the search below, then click "Apply code".
+const PREFIX = `// POIs come from ALS Places v2, called as a raw REST request. Under the hood,
+// searchPois(query) POSTs to the Places endpoint and turns each result into a marker:
+//
+//   const res = await fetch(
+//     'https://places.geo.<region>.amazonaws.com/v2/search-nearby?key=<KEY>',
+//     { method: 'POST', body: JSON.stringify({
+//         QueryPosition: [lng, lat],
+//         QueryRadius: query.radiusMeters,
+//         Filter: { IncludeCategories: query.includeCategories },
+//         MaxResults: query.maxResults,
+//     }) },
+//   );
+//   const { ResultItems } = await res.json();   // each item -> a map marker
+//
+// Edit the search below, then click "Apply code":
 searchPois(`;
 
 const SUFFIX = `)`;

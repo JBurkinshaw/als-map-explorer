@@ -7,7 +7,9 @@ import type { MapController } from './mapController';
 import type { SettingsStore } from '../state/store';
 import type { MapView } from '../types';
 
-export type ThreeDPatch = Partial<Pick<MapView, 'terrain3d' | 'buildings3d' | 'globe' | 'pitch'>>;
+export type ThreeDPatch = Partial<
+  Pick<MapView, 'terrain3d' | 'buildings3d' | 'contourDensity' | 'globe' | 'pitch'>
+>;
 
 export function apply3D(map: MapController, store: SettingsStore, patch: ThreeDPatch): void {
   const before = store.mapView;
@@ -20,8 +22,12 @@ export function apply3D(map: MapController, store: SettingsStore, patch: ThreeDP
   store.setMapView({ ...patch, pitch });
   const view = store.mapView;
 
-  // Did a style-request feature change? If so, rebuild the style URL.
-  const styleChanged = view.terrain3d !== before.terrain3d || view.buildings3d !== before.buildings3d;
+  // Did a style-request feature change? If so, rebuild the style URL. Contours are
+  // a style-request feature too (like terrain/buildings), so a contour change reloads.
+  const styleChanged =
+    view.terrain3d !== before.terrain3d ||
+    view.buildings3d !== before.buildings3d ||
+    view.contourDensity !== before.contourDensity;
   if (styleChanged) {
     map.applyBasemap(view); // 'style.load' re-applies globe + pitch afterwards
   } else {

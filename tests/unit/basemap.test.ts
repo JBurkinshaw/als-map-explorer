@@ -26,4 +26,14 @@ describe('buildStyleUrl', () => {
     expect(url).not.toContain('terrain=');
     expect(url).not.toContain('buildings=');
   });
+
+  it('adds contour-density when a density level is set', () => {
+    const url = buildStyleUrl({ styleName: 'Standard', colorScheme: 'Light', contourDensity: 'Medium' });
+    expect(url).toContain('contour-density=Medium');
+  });
+
+  it("omits contour-density when contours are 'Off'", () => {
+    const url = buildStyleUrl({ styleName: 'Standard', colorScheme: 'Light', contourDensity: 'Off' });
+    expect(url).not.toContain('contour-density');
+  });
 });

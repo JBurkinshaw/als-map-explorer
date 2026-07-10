@@ -54,8 +54,13 @@ function renderExplanation(exp: Explanation): HTMLElement {
   const box = document.createElement('div');
   box.className = styles.explanation;
 
-  const summary = document.createElement('p');
-  summary.textContent = exp.summary;
+  // Render each paragraph as its own block so multi-paragraph explanations read
+  // as distinct steps rather than one run-on line.
+  for (const text of exp.paragraphs) {
+    const p = document.createElement('p');
+    p.textContent = text;
+    box.appendChild(p);
+  }
 
   const link = document.createElement('a');
   link.href = exp.referenceUrl;
@@ -63,6 +68,6 @@ function renderExplanation(exp: Explanation): HTMLElement {
   link.rel = 'noreferrer';
   link.textContent = `\u{1F4D6} ${exp.referenceLabel}`;
 
-  box.append(summary, link);
+  box.appendChild(link);
   return box;
 }
