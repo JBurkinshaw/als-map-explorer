@@ -102,7 +102,7 @@ export function createPoiTab(map: MapController, store: SettingsStore, notice: N
   }
 
   shell.onApply(() => {
-    const result = runSnippet(editor.getEditableText(), { searchPois });
+    const result = runSnippet(editor.getFullText(), { searchPois });
     if (result.ok) notice.clear();
     else notice.show(`Code error: ${result.error}`);
   });

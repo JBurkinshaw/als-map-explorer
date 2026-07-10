@@ -20,6 +20,7 @@ export class MapController {
   readonly map: MlMap;
   private view: MapView;
   private markers: MlMarker[] = [];
+  private readonly resizeObserver: ResizeObserver;
 
   constructor(container: HTMLElement, view: MapView, private readonly notice: Notice) {
     this.view = { ...view };
@@ -29,10 +30,22 @@ export class MapController {
       style: buildStyleUrl(view),
       center: view.center,
       zoom: view.zoom,
+      // Suppress the default attribution control so we add exactly one ourselves;
+      // otherwise it stacks with the ALS style's own source attribution.
+      attributionControl: false,
       validateStyle: false, // faster loads, per the ALS examples
     });
 
+    // compact: false shows the full "© AWS, HERE" attribution bar rather than the
+    // collapsed "i" button (whose layered icon reads as a doubled circle).
+    this.map.addControl(new maplibregl.AttributionControl({ compact: false }));
     this.map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }));
+
+    // The map is created before the Web Awesome split-panel has finished sizing its
+    // slot, so MapLibre measures a near-zero container and the canvas stays small
+    // until a window resize. Re-measure whenever the container's size changes.
+    this.resizeObserver = new ResizeObserver(() => this.map.resize());
+    this.resizeObserver.observe(container);
 
     // A restyle drops runtime state, so re-apply globe + pitch each time a style loads.
     this.map.on('style.load', () => this.applyRuntime());

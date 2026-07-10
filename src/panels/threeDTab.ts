@@ -72,7 +72,7 @@ export function createThreeDTab(map: MapController, store: SettingsStore, notice
   });
 
   shell.onApply(() => {
-    const result = runSnippet(editor.getEditableText(), { set3D });
+    const result = runSnippet(editor.getFullText(), { set3D });
     if (result.ok) notice.clear();
     else notice.show(`Code error: ${result.error}`);
   });

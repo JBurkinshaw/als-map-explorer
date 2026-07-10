@@ -56,7 +56,7 @@ export function createBasemapTab(map: MapController, store: SettingsStore, notic
   });
 
   shell.onApply(() => {
-    const result = runSnippet(editor.getEditableText(), { setBasemap: apply });
+    const result = runSnippet(editor.getFullText(), { setBasemap: apply });
     if (result.ok) notice.clear();
     else notice.show(`Code error: ${result.error}`);
   });

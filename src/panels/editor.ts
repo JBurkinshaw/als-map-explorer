@@ -54,6 +54,16 @@ export class LockedEditor {
     return this.view.state.doc.sliceString(this.prefixLen, docLen - this.suffixLen);
   }
 
+  /**
+   * The full snippet (locked prefix + editable region + locked suffix). This is
+   * what gets run: the prefix/suffix carry the actual `helper(...)` call, so the
+   * editable region alone would not invoke anything (and an object literal in it
+   * would parse as a block statement). Run the whole thing instead.
+   */
+  getFullText(): string {
+    return this.view.state.doc.toString();
+  }
+
   /** Replace the editable region (used to keep code in sync with HTML inputs). */
   setEditableText(text: string): void {
     const docLen = this.view.state.doc.length;
