@@ -11,3 +11,10 @@ dist/
 .DS_Store
 Thumbs.db
 *.swp
+
+# Slide exports (source of truth is slides/talk.md) - regenerate with Marp
+slides/*.html
+slides/*.htm
+slides/*.pdf
+slides/*.pptx
+slides/talk.*.png

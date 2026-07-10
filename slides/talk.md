@@ -111,13 +111,13 @@ talking about. The learning was the point, not the app.
 
 <ul>
 <li>Basemap style + colour scheme</li>
-<li>POI search &amp; category filters (ALS Places)</li>
+<li>POI search &amp; category filters, with <b>category-appropriate Maki icons</b> (ALS Places)</li>
 <li>3D terrain, buildings, globe, tilt + topographic contours</li>
 <li>Every tab: live map · HTML inputs · <b>editable code</b> · plain-language explainer · live request preview</li>
 </ul>
 
 <!--
-SCREEN SHARE the app (~45s). Quick tour: switch basemap, run a POI search, tilt into 3D + contours.
+SCREEN SHARE the app (~45s). Quick tour: switch basemap, run a POI search (point out each marker's Maki icon matching its type), tilt into 3D + contours.
 Then show the editable code region updating the map, and the live request preview (real ALS request, key masked).
 Land the learning-first idea: you see the actual requests, not an SDK wrapper.
 -->
@@ -197,9 +197,9 @@ specs/001-als-map-explorer/
 </div>
 <div>
 
-- 3 features, same shape:
-  `001` app · `002` contours · `003` request preview
-- Committed as **docs → feat** pairs
+- 4 features, same shape:
+  `001` app · `002` contours · `003` preview · `004` POI icons
+- Mostly committed **docs → feat** (spec, then code)
 - User stories are **prioritised & independently testable** (P1 = shippable MVP)
 
 </div>
@@ -246,9 +246,9 @@ This teed up the next slide: pin vs delegate.
 <h3>I delegated → research.md</h3>
 
 - **Web Awesome** (vs Shoelace / Material / Pico)
-- ALS v2 REST params + auth
 - `contour-density` = **Low / Med / High**
 - "isolines" ≠ contours (it's the Routes API)
+- **Maki icons**: fetch-vs-bundle · no `atm` → `bank`
 - CodeMirror vs Monaco
 
 </div>
@@ -257,9 +257,10 @@ This teed up the next slide: pin vs delegate.
 > Pin the things that define the project. Let it research the rest - and make it write down *why*.
 
 <!--
-~50s - this is the richest slide. Two real examples:
+~50s - this is the richest slide. Three real examples:
 1. Web Awesome: I said "Mantine but framework-agnostic"; the agent compared options and recorded a Pico CSS fallback so "minimal deps" stayed a decision, not an accident.
 2. "isolines": research showed ALS isolines = CalculateIsolines (isochrones), NOT contour lines - so it split into "contours now, isochrones later". Research stopped me building the wrong thing.
+3. Maki icons (the newest feature, 004): I said "use Maki, find the simplest way to get them". The plan-phase research chose fetching icons from a CDN over adding the npm package or vendoring files, and - by actually checking the live set - found there's no `atm` icon, so ATMs map to `bank`. Two design decisions that came from checking, not guessing. This is the freshest example, and I built it live-ish during this prep.
 -->
 
 ---

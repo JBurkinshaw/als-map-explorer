@@ -7,6 +7,17 @@ through a dual-control model: change a setting with an HTML input **or** edit th
 live code that drives the map, and watch both stay in sync. Each capability has a
 plain-language explanation and a link to the authoritative reference.
 
+## Why this exists
+
+This is a personal learning exercise. I built it with [GitHub Spec Kit](https://github.com/github/spec-kit)
+to get hands-on with three things at once: the spec-driven-development workflow,
+**AWS Location Service**, and how it integrates with **MapLibre**. It also doubles as
+the running example for a short **lightning talk** on spec-driven development. The app
+itself is the vehicle - the learning was the point.
+
+The talk deck and speaking notes are in `slides/`, and the spec-driven artifacts
+(spec, plan, research, tasks) for each feature are in `specs/`.
+
 ## Prerequisites
 
 - Node.js 20+ and npm
@@ -14,8 +25,22 @@ plain-language explanation and a link to the authoritative reference.
 
 ### Provisioning an API key
 
-Create a key scoped to the Maps and Places services (read-only by nature). Using
-the AWS CLI:
+You need a key scoped to the Maps and Places services (read-only by nature). Do it
+whichever way you prefer.
+
+#### Via the AWS Management Console
+
+1. Sign in and open the **Amazon Location Service** console. Pick your **region**
+   (top-right) - remember it; it goes in `VITE_AWS_REGION`.
+2. In the left nav choose **API keys**, then **Create API key**.
+3. Give it a name (e.g. `als-map-explorer`).
+4. Under resource restrictions, allow the **Maps** and **Places** actions
+   (`geo-maps:*` and `geo-places:*`) for the region's default provider.
+5. (Optional but recommended for anything public) add an **allowed referer** URL and
+   an **expiry**.
+6. **Create** the key, then copy its value - this is your `VITE_ALS_API_KEY`.
+
+#### Via the AWS CLI
 
 ```sh
 aws location create-key --key-name als-map-explorer \
@@ -23,8 +48,8 @@ aws location create-key --key-name als-map-explorer \
   --no-expiry
 ```
 
-For anything beyond a local demo, add a referer restriction and an expiry. The key
-is sent from the browser, so treat it as low-privilege and public.
+Either way: for anything beyond a local demo, add a referer restriction and an expiry.
+The key is sent from the browser, so treat it as low-privilege and public.
 
 ## Setup
 
